@@ -35,6 +35,21 @@ O MVP passou no criterio definido: 5 de 5 casos foram avaliados como melhores ap
 - Outputs finais ficaram menos "IA" por reduzir frases previsiveis, tom corporativo e conclusoes motivacionais.
 - A marca apareceu com mais identidade: AIOS, sistemas cognitivos, operacao manual, automacao com contexto.
 
+## Evolucao Identificada Apos Os Testes
+
+Os testes mostraram que a layer nao deve ser apenas refinador de prompt, injetor de contexto e humanizador. O operador ainda estava fazendo trabalho cognitivo demais ao precisar imaginar quais especialistas, responsabilidades, workflows e criterios editoriais deveriam existir.
+
+Por isso, a camada deve evoluir para transformar intencao humana em arquitetura operacional inteligente:
+
+- inferir agentes necessarios;
+- inferir responsabilidades;
+- inferir workflow;
+- inferir criterios de qualidade;
+- inferir padroes narrativos;
+- sugerir etapas de critica e revisao.
+
+Essa evolucao continua dentro do escopo MVP: sem novo runtime, sem memoria complexa, sem autonomia excessiva e sem estruturas gigantes.
+
 ## Gargalos Encontrados
 
 - A camada depende muito da qualidade dos arquivos em `context/`; se estiverem vazios, o ganho cai.
@@ -42,12 +57,13 @@ O MVP passou no criterio definido: 5 de 5 casos foram avaliados como melhores ap
 - A Cognitive Layer melhora texto e briefing, mas ainda nao garante qualidade visual quando o output inclui imagem/carrossel.
 - A avaliacao ainda e editorial/manual; suficiente para MVP, mas nao para benchmark estatistico.
 - A skill precisa de um ritual de uso explicito. Sem o operador chamar a camada, ela nao entra automaticamente.
+- A primeira versao ainda deixava parte da arquitetura cognitiva na cabeca do operador.
 
 ## Melhorias Simples Recomendadas
 
 1. Preencher `context/examples.md` com 3 a 5 exemplos reais aprovados.
-2. Criar um checklist curto "antes de rodar OpenSquad" com: objetivo, publico, canal, proibicoes, formato.
-3. Adicionar exemplos de uso na propria skill para os cinco formatos testados.
+2. Usar a Operacao "Cognitive Architecture Inference" antes de compor o prompt final para OpenSquad.
+3. Adicionar exemplos de arquitetura sugerida para os cinco formatos testados.
 4. Criar uma pasta `benchmarks/3f3n-cognitive-layer-mvp/runs/` em testes futuros para salvar outputs reais de squads quando o runtime estiver disponivel.
 5. Manter uma rodada unica de critica + humanizacao; nao transformar isso em loop autonomo.
 
