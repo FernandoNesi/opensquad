@@ -15,6 +15,8 @@ test('init creates _opensquad directory structure', async () => {
     await stat(join(tempDir, '_opensquad', 'core'));
     await stat(join(tempDir, '_opensquad', 'core', 'architect.agent.yaml'));
     await stat(join(tempDir, '_opensquad', 'core', 'runner.pipeline.md'));
+    await stat(join(tempDir, '_opensquad', 'core', 'human-dynamics.layer.md'));
+    await stat(join(tempDir, '_opensquad', 'core', 'cognitive-governance.system.md'));
     await stat(join(tempDir, '_opensquad', '_memory'));
     await stat(join(tempDir, '.claude', 'skills', 'opensquad', 'SKILL.md'));
     await stat(join(tempDir, 'CLAUDE.md'));

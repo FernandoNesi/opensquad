@@ -62,21 +62,49 @@ Before starting execution:
 4. **Model tiers**: Individual steps declare their own `model_tier` in their frontmatter (`fast` or `powerful`), set by the Architect at squad creation time.
    - If the file exists: read and note the tier values for reference.
    - If the file doesn't exist: ignore silently — all steps default to `powerful` at dispatch.
-5. Inform the user that the squad is starting:
+5. **Human Dynamics Layer (experimental MVP)**:
+   a. Read `_opensquad/core/human-dynamics.layer.md`.
+   b. Enable the layer by default unless `squad.yaml` explicitly contains:
+      ```yaml
+      human_dynamics:
+        enabled: false
+      ```
+   c. Store the enabled/disabled flag in working memory. Initialize the actual `behavioral_state` after the run folder is created, because `run_id` is part of the run seed.
+   d. The layer must influence tone, strictness, concision, disagreement, and tolerance for overly polished/template-like work.
+   e. The layer must NOT create fake mistakes, bad grammar, emojis, emotional roleplay, chaos, or factual drift.
+5b. **Cognitive Governance System (mandatory MVP)**:
+   a. Read `_opensquad/core/cognitive-governance.system.md`.
+   b. Always enable the system for pipeline execution. This is a core governance layer, not a squad feature toggle.
+   c. Store `cognitive_governance.enabled: true` in working memory. Initialize the actual per-agent `behavioral_regulation` state after the run folder is created, because `run_id` is part of the run seed.
+   d. The system must regulate emotional intensity, theatricality, founder performance, overclaim risk, corporate polish, and hype.
+   e. The system must NOT flatten all strong opinions, turn output corporate, create fake caveats everywhere, add review loops beyond the one-pass rule, or override user instructions.
+6. Inform the user that the squad is starting:
    ```
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    🚀 Running squad: {squad name}
    📋 Pipeline: {number of steps} steps
    🤖 Agents: {list agent names with icons}
+   🧭 Human Dynamics: {enabled|disabled}
+   🧠 Cognitive Governance: enabled
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    ```
-5b. **Initialize run folder**: Generate a unique run ID for this execution:
+6b. **Initialize run folder**: Generate a unique run ID for this execution:
    - Format: `YYYY-MM-DD-HHmmss` using the current timestamp (e.g. `2026-03-03-143022`)
    - Check if `squads/{name}/output/{run_id}/` already exists
      - If it does (sub-second collision), append `-2`, `-3`, etc. until the folder does not exist
    - Create the folder using Bash: `mkdir -p squads/{name}/output/{run_id}`
    - Store `run_id` in working memory for this run — it will be used for ALL output paths
-6. **Initialize state.json**: Create `squads/{name}/state.json` from scratch (see below). State writes are always mandatory.
+6c. **Initialize Human Dynamics state**: If enabled, initialize `behavioral_state` in working memory for every agent now.
+   - Values must stay between `0.05` and `0.92`.
+   - Use small run-specific variation based on `run_id`, agent order, and current timestamp.
+   - Do not use extreme values at run start.
+   - If disabled, set `behavioral_state.enabled` to `false` and skip agent variable generation.
+6d. **Initialize Cognitive Governance state**: Initialize `cognitive_governance` in working memory for every agent now.
+   - Values must stay between `0.05` and `0.92`.
+   - Use small run-specific variation based on `run_id`, agent order, and current timestamp.
+   - Start from moderate regulation, not fear or censorship.
+   - Include `behavioral_regulation` values for each agent: `sobriety_level`, `emotional_noise`, `founder_performance`, `theatricality`, `overclaim_risk`, `corporate_polish`, `human_maturity`, `emotional_pressure`.
+7. **Initialize state.json**: Create `squads/{name}/state.json` from scratch (see below). State writes are always mandatory.
    - **IMPORTANT**: You MUST write to `squads/{name}/state.json` before every step and after every handoff. This is non-negotiable. Never skip these writes.
    - Create `state.json` from scratch:
      a. Read `squads/{name}/squad-party.csv` — for each agent row (skip header), extract:
@@ -105,6 +133,44 @@ Before starting execution:
             }
           ],
           "handoff": null,
+          "behavioral_state": {
+            "enabled": true,
+            "version": "mvp-1",
+            "runSeed": "{run_id}",
+            "agents": {
+              "{agent id}": {
+                "emotional_pressure": 0.18,
+                "review_strictness": 0.52,
+                "fatigue": 0.08,
+                "creative_confidence": 0.55,
+                "simplification_bias": 0.32,
+                "narrative_aggression": 0.38,
+                "disagreement_rate": 0.22,
+                "obsession_focus": "clarity",
+                "urgency_bias": 0.30,
+                "tolerance_level": 0.58
+              }
+            },
+            "events": []
+          },
+          "cognitive_governance": {
+            "enabled": true,
+            "version": "mvp-1",
+            "runSeed": "{run_id}",
+            "agents": {
+              "{agent id}": {
+                "sobriety_level": 0.68,
+                "emotional_noise": 0.24,
+                "founder_performance": 0.18,
+                "theatricality": 0.16,
+                "overclaim_risk": 0.22,
+                "corporate_polish": 0.31,
+                "human_maturity": 0.70,
+                "emotional_pressure": 0.20
+              }
+            },
+            "events": []
+          },
           "startedAt": null,
           "updatedAt": "{ISO timestamp now}"
         }
@@ -154,8 +220,47 @@ Before executing any step that references an agent:
 
    The final agent context composition order is:
    ```
-   Agent (.agent.md) → Platform Best Practices → Skill Instructions
+   Agent (.agent.md) → Platform Best Practices → Skill Instructions → Human Dynamics State → Cognitive Governance State
    ```
+
+6. **Inject Human Dynamics State**: If the Human Dynamics Layer is enabled, append the current agent's behavioral state to the agent context before task/step instructions:
+   ````markdown
+   --- HUMAN DYNAMICS STATE ---
+
+   You are operating with the following dynamic behavioral state for this step:
+
+   ```json
+   {current agent behavioral_state}
+   ```
+
+   Apply this as subtle organizational pressure:
+   - Do not mention these variables in the output.
+   - Do not roleplay emotions.
+   - Do not add fake errors, emojis, slang, or bad grammar.
+   - Let the state influence strictness, concision, disagreement, pressure, and tolerance for polished/template-like work.
+   - Preserve the task, facts, brand constraints, and required format.
+   ````
+
+7. **Inject Cognitive Governance State**: Append the current agent's governance state after Human Dynamics State and before task/step instructions:
+   ````markdown
+   --- COGNITIVE GOVERNANCE STATE ---
+
+   You are operating under mandatory cognitive governance for this step:
+
+   ```json
+   {current agent behavioral_regulation}
+   ```
+
+   Apply this as a quality governor:
+   - Do not mention these variables in the output.
+   - Do not make the output colder, generic, or corporate.
+   - Keep useful tension, but remove theatrical escalation.
+   - Do not overclaim beyond evidence, mechanism, scope, or user-provided context.
+   - Avoid founder performance: no staged profundity, no fake inevitability, no posture.
+   - Prefer concrete operational specificity over manifesto language.
+   - If a claim sounds impressive but cannot be defended, narrow it or cut it.
+   - Preserve the task, facts, brand constraints, and required format.
+   ````
 
 ### Task-Based Agent Execution
 
@@ -249,6 +354,8 @@ Apply this transformation consistently for every write in this step.
        }
      ],
      "handoff": {preserve existing handoff object, or null if this is the first step},
+     "behavioral_state": {preserve existing behavioral_state object, or initialize it if missing},
+     "cognitive_governance": {preserve existing cognitive_governance object, or initialize it if missing},
      "startedAt": "{ISO timestamp — set on the first step only, then preserve from existing state.json on subsequent steps}",
      "updatedAt": "{ISO timestamp now}"
    }
@@ -291,6 +398,8 @@ Apply this transformation consistently for every write in this step.
   - The veto conditions from the step file (agent should self-check before completing)
   - The company context
   - The squad memory
+  - If enabled: the current agent's Human Dynamics State and the relevant recent `behavioral_state.events`
+  - The current agent's Cognitive Governance State and the relevant recent `cognitive_governance.events`
   - The **transformed** path to save output (e.g., `squads/{name}/output/2026-03-20-140736/slides/v1/draft.md`)
 - Wait for the subagent to complete
 - Inform user: `✓ {Agent Name} completed`
@@ -354,6 +463,50 @@ Use the **stored transformed path** (after Output Path Transformation Steps 1 an
 
 **IMPORTANT**: Do NOT rely on reading the file with the Read tool to "verify" output. The Read tool returns content that can be misinterpreted. Use ONLY the bash `test -s` command — its output is binary and cannot be hallucinated.
 
+### Post-Step Cognitive Governance Review
+
+After Post-Step Output Validation and BEFORE Veto Condition Enforcement, run the mandatory Cognitive Governance review for the output that was just produced.
+
+This is a one-pass regulation gate. It prevents the Human Dynamics Layer, hostile-review energy, or persuasive best-practices from turning into theatrical, inflated, or performative output.
+
+1. **Read the output that was just produced**
+   - Use the transformed output path, not the raw path from the step file.
+   - If the step produced multiple files, review each file that contains user-facing strategy, copy, scripts, content, critique, or page structure.
+   - Skip binary/media artifacts unless the step also generated accompanying text.
+
+2. **Evaluate governance triggers**
+   Check whether the output contains any of the following:
+   - emotional intensity unsupported by proof;
+   - aggression aimed at the audience instead of the broken operating model;
+   - founder performance, staged profundity, or fake inevitability;
+   - theatrical manifesto language where operational clarity is needed;
+   - broad claims using words like "tudo", "qualquer", "nunca mais", "automaticamente", "inevitável", or "substitui" without scope;
+   - time, revenue, productivity, conversion, or replacement claims without evidence or bounded context;
+   - copy that could be used by any AI startup after replacing the brand name;
+   - corporate polish, symmetrical frameworks, or over-explaining that make the output feel manufactured.
+
+3. **Decision**
+   - If no trigger is material: mark governance as passed and continue.
+   - If any trigger is material: ask the same agent to revise the same file once.
+   - Maximum: **one governance revision per step**.
+   - Do not start a loop. If the issue remains after one revision, log the risk and let downstream reviewers or user checkpoints handle it.
+
+4. **Revision instruction**
+   When revising, instruct the agent:
+   ```
+   Regulate this output without making it generic or corporate.
+   Reduce theatricality, founder performance, emotional noise, and unsupported claims.
+   Keep useful tension.
+   Replace absolutes with bounded claims.
+   Add concrete operational specificity where possible.
+   Preserve the required format, facts, brand constraints, and user intent.
+   Save the revised output to the same transformed path.
+   ```
+
+5. **Post-revision validation**
+   - After a governance revision, run the same Bash `test -s` validation again.
+   - If validation fails, follow the existing Post-Step Output Validation failure path.
+
 ### Veto Condition Enforcement
 
 After an agent completes a step (before moving to the next step):
@@ -371,6 +524,118 @@ After an agent completes a step (before moving to the next step):
 
 This creates an internal quality loop BEFORE the reviewer sees the content,
 catching obvious issues early and reducing review cycle waste.
+
+### Human Dynamics State Updates
+
+After Veto Condition Enforcement and before Dashboard Handoff, update `behavioral_state` in working memory and in the next `state.json` write.
+
+If the layer is disabled, skip this section entirely.
+
+1. **Normal step drift**
+   - Active agent: `fatigue +0.03`
+   - Active agent: `emotional_pressure +0.02` if the step produced a long or high-stakes output
+   - Active agent: `creative_confidence +0.03` if the step passed validation and veto checks cleanly
+   - Clamp every numeric value to `0.05..0.92`
+
+2. **Veto or rejection drift**
+   - If veto conditions were triggered or a reviewer rejects an output:
+     - producing agent: `emotional_pressure +0.12`, `simplification_bias +0.08`, `creative_confidence -0.06`
+     - reviewer/critic agent: `review_strictness +0.06`, `tolerance_level -0.05`
+     - add an event:
+       ```json
+       {
+         "step": "{step id}",
+         "type": "rejection",
+         "from": "{reviewer/critic agent id}",
+         "to": "{producing agent id}",
+         "delta": "pressure+0.12 strictness+0.06 simplification+0.08",
+         "reason": "{short reason in user's language}"
+       }
+       ```
+
+3. **Approval drift**
+   - If a reviewer approves without required changes:
+     - reviewer/critic agent: `review_strictness -0.05`, `tolerance_level +0.05`
+     - next reviewer/critic agent, if any: `disagreement_rate +0.05`, `review_strictness +0.04`
+   - If 2+ approvals happen consecutively without required changes, add an event:
+     ```json
+     {
+       "step": "{step id}",
+       "type": "easy_approval",
+       "from": "{approving agent id}",
+       "to": "{next critical agent id or null}",
+       "delta": "review_strictness-0.05 tolerance+0.05 next_disagreement+0.05",
+       "reason": "approval sequence may reduce criticality"
+     }
+     ```
+
+4. **Influence rules**
+   - Strict reviewer (`review_strictness > 0.70`) raises creator `emotional_pressure +0.04` on handoff.
+   - Fatigued strategist (`fatigue > 0.55`) raises downstream copy/design `disagreement_rate +0.04` and `obsession_focus: "monotony"`.
+   - High pressure creator (`emotional_pressure > 0.60`) raises their own `narrative_aggression +0.05` and `simplification_bias +0.04`.
+   - Low strictness reviewer (`review_strictness < 0.35`) raises next critic `review_strictness +0.05`.
+
+5. **Coherence guard**
+   - If any value would cause the agent to ignore the task, reduce it toward `0.50`.
+   - Behavioral drift affects emphasis and editing behavior only. It never overrides user instructions, source facts, output format, safety rules, or veto conditions.
+
+6. **State persistence**
+   - Preserve only the latest 20 `behavioral_state.events`.
+   - Every `state.json` write after this point must include the updated `behavioral_state`.
+
+### Cognitive Governance State Updates
+
+After the Post-Step Cognitive Governance Review, Veto Condition Enforcement, and Human Dynamics State Updates, update `cognitive_governance` in working memory and in the next `state.json` write.
+
+1. **Clean governance pass**
+   - If the output passed governance without revision:
+     - active agent: `human_maturity +0.03`
+     - active agent: `overclaim_risk -0.03`
+     - active agent: `emotional_noise -0.02`
+     - clamp every numeric value to `0.05..0.92`
+
+2. **Regulated output drift**
+   - If the output required a governance revision:
+     - active agent: `sobriety_level +0.06`
+     - active agent: `founder_performance +0.04`
+     - active agent: `theatricality +0.04`
+     - active agent: `overclaim_risk +0.06`
+     - active agent: `human_maturity -0.02`
+     - add an event:
+       ```json
+       {
+         "step": "{step id}",
+         "type": "regulated_output",
+         "agent": "{active agent id}",
+         "delta": "sobriety+0.06 overclaim+0.06 theatricality+0.04 founder_performance+0.04",
+         "reason": "{short reason in user's language}"
+       }
+       ```
+
+3. **Corporate polish drift**
+   - If the governance review detects clean but template-like output:
+     - active agent: `corporate_polish +0.06`
+     - active agent: `human_maturity -0.01`
+     - next creator/reviewer: `sobriety_level +0.03`
+     - next creator/reviewer must add specificity instead of more polish.
+
+4. **Human Dynamics coupling**
+   - If the Human Dynamics state for the same agent has `emotional_pressure > 0.60` or `narrative_aggression > 0.60`:
+     - copy the Human Dynamics `emotional_pressure` into the agent's governance `emotional_pressure`
+     - active agent: `sobriety_level +0.04`
+     - active agent: `theatricality -0.03`
+   - If repeated approvals reduce reviewer strictness, raise downstream governance vigilance:
+     - next reviewer/critic: `overclaim_risk +0.04`
+     - next reviewer/critic: `corporate_polish +0.03`
+
+5. **Governance guard**
+   - Governance regulates expression and claim scope only.
+   - It never overrides source facts, user instructions, output format, safety rules, or explicit checkpoint decisions.
+   - It must not turn strong copy into vague compliance language.
+
+6. **State persistence**
+   - Preserve only the latest 20 `cognitive_governance.events`.
+   - Every `state.json` write after this point must include the updated `cognitive_governance`.
 
 ### Review Loops
 
@@ -391,13 +656,15 @@ After a step completes output and there IS a next step (MANDATORY):
    - Pipeline `"status": "running"`
    - Add or update `"handoff"`:
      ```json
-     "handoff": {
+    "handoff": {
        "from": "{current agent id}",
        "to": "{next agent id}",
        "message": "{one-sentence summary of what was produced, written in the user's language}",
        "completedAt": "{ISO timestamp now}"
-     }
-     ```
+    }
+   ```
+   - Preserve and write the updated `"behavioral_state"` object.
+   - Preserve and write the updated `"cognitive_governance"` object.
    - `"updatedAt"`: now
 
 2. _(No delay — proceed immediately to working state)_
@@ -406,6 +673,8 @@ After a step completes output and there IS a next step (MANDATORY):
    - Current agent: `"status": "done"`
    - Next agent: `"status": "working"`
    - Keep the `"handoff"` object from step 1 unchanged
+   - Preserve and write the updated `"behavioral_state"` object.
+   - Preserve and write the updated `"cognitive_governance"` object.
    - `"updatedAt"`: now
 
 ### Step Execution Order (Summary)
@@ -418,8 +687,11 @@ For reference, the complete execution order for each pipeline step is:
 2. Read step file
 3. Check execution mode and execute (subagent / inline / checkpoint)
 4. Post-Step Output Validation (bash gate)
-5. Veto Condition Enforcement
-6. Dashboard Handoff (to next step)
+5. Cognitive Governance Review
+6. Veto Condition Enforcement
+7. Human Dynamics State Updates
+8. Cognitive Governance State Updates
+9. Dashboard Handoff (to next step)
 ```
 
 Steps 1 and 4 are binary bash gates. If either fails, the pipeline does NOT advance — the user is consulted.
@@ -435,6 +707,8 @@ Steps 1 and 4 are binary bash gates. If either fails, the pipeline does NOT adva
     - `"completedAt"`: now
     - `"startedAt"`: preserve from existing `state.json`
     - Keep existing `"handoff"` object
+    - Keep existing `"behavioral_state"` object, including latest events
+    - Keep existing `"cognitive_governance"` object, including latest events
 
 ### Post-Completion Cleanup
 
@@ -530,6 +804,8 @@ Track pipeline state in memory during execution:
 - Outputs from each completed step (file paths)
 - User choices at checkpoints
 - Review cycle count
+- Human Dynamics behavioral_state (if enabled)
+- Cognitive Governance cognitive_governance state
 - Start time
 
 This state does NOT persist to disk — it exists only during the current run.

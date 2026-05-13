@@ -27,6 +27,63 @@ export interface Handoff {
   completedAt: string;
 }
 
+export interface AgentBehavioralState {
+  emotional_pressure: number;
+  review_strictness: number;
+  fatigue: number;
+  creative_confidence: number;
+  simplification_bias: number;
+  narrative_aggression: number;
+  disagreement_rate: number;
+  obsession_focus: string;
+  urgency_bias: number;
+  tolerance_level: number;
+}
+
+export interface BehavioralStateEvent {
+  step: string;
+  type: string;
+  from: string | null;
+  to: string | null;
+  delta: string;
+  reason: string;
+}
+
+export interface BehavioralState {
+  enabled: boolean;
+  version: string;
+  runSeed: string;
+  agents: Record<string, AgentBehavioralState>;
+  events: BehavioralStateEvent[];
+}
+
+export interface AgentBehavioralRegulation {
+  sobriety_level: number;
+  emotional_noise: number;
+  founder_performance: number;
+  theatricality: number;
+  overclaim_risk: number;
+  corporate_polish: number;
+  human_maturity: number;
+  emotional_pressure: number;
+}
+
+export interface CognitiveGovernanceEvent {
+  step: string;
+  type: string;
+  agent: string | null;
+  delta: string;
+  reason: string;
+}
+
+export interface CognitiveGovernance {
+  enabled: boolean;
+  version: string;
+  runSeed: string;
+  agents: Record<string, AgentBehavioralRegulation>;
+  events: CognitiveGovernanceEvent[];
+}
+
 export type SquadStatus =
   | "idle"
   | "running"
@@ -43,6 +100,8 @@ export interface SquadState {
   };
   agents: Agent[];
   handoff: Handoff | null;
+  behavioral_state?: BehavioralState;
+  cognitive_governance?: CognitiveGovernance;
   startedAt: string | null;
   updatedAt: string;
 }
