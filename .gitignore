@@ -6,6 +6,9 @@ _opensquad/_memory/company.md
 _opensquad/_memory/preferences.md
 _opensquad/_browser_profile/
 docs/
+!docs/
+docs/*
+!docs/3f3n-cognitive-layer-eval.md
 .superpowers/
 temp/
 tests/
