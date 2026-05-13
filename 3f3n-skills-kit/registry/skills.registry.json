@@ -1,0 +1,256 @@
+{
+  "version": "3.1.0",
+  "updated_at": "2026-05-06T03:00:00Z",
+  "total_skills": 25,
+  "categories": {
+    "analysis": 2,
+    "rules": 3,
+    "execution": 3,
+    "workflow": 4,
+    "integration": 5,
+    "meta": 3,
+    "pre-input": 1,
+    "post-processing": 3,
+    "wip": 2
+  },
+  "skills": [
+    {
+      "name": "web-scraping",
+      "category": "analysis",
+      "version": "1.0",
+      "status": "production",
+      "source": "rewritten",
+      "path": "/skills/analysis/web-scraping.md",
+      "layer": "core"
+    },
+    {
+      "name": "analyser-14-low-ticket-3f3n",
+      "category": "analysis",
+      "version": "3.0",
+      "status": "production",
+      "source": "created",
+      "path": "/skills/analysis/analyser-14-low-ticket-3f3n/SKILL.md",
+      "layer": "core"
+    },
+    {
+      "name": "react-best-practices",
+      "category": "rules",
+      "version": "1.0",
+      "status": "production",
+      "source": "rewritten",
+      "path": "/skills/rules/react-best-practices.md",
+      "layer": "core"
+    },
+    {
+      "name": "frontend-design",
+      "category": "rules",
+      "version": "1.0",
+      "status": "production",
+      "source": "rewritten",
+      "path": "/skills/rules/frontend-design.md",
+      "layer": "core"
+    },
+    {
+      "name": "web-design-review",
+      "category": "rules",
+      "version": "1.0",
+      "status": "production",
+      "source": "rewritten",
+      "path": "/skills/rules/web-design-review.md",
+      "layer": "core"
+    },
+    {
+      "name": "json-formatter",
+      "category": "execution",
+      "version": "1.0",
+      "status": "production",
+      "source": "created",
+      "path": "/skills/execution/json-formatter.md",
+      "layer": "core"
+    },
+    {
+      "name": "data-transformer",
+      "category": "execution",
+      "version": "1.0",
+      "status": "production",
+      "source": "created",
+      "path": "/skills/execution/data-transformer.md",
+      "layer": "core"
+    },
+    {
+      "name": "output-structurer",
+      "category": "execution",
+      "version": "1.0",
+      "status": "production",
+      "source": "created",
+      "path": "/skills/execution/output-structurer.md",
+      "layer": "core"
+    },
+    {
+      "name": "skill-builder",
+      "category": "workflow",
+      "version": "1.0",
+      "status": "production",
+      "source": "rewritten",
+      "path": "/skills/workflow/skill-builder.md",
+      "layer": "core"
+    },
+    {
+      "name": "data-pipeline",
+      "category": "workflow",
+      "version": "1.0",
+      "status": "production",
+      "source": "rewritten",
+      "path": "/skills/workflow/data-pipeline.md",
+      "layer": "core"
+    },
+    {
+      "name": "system-orchestrator",
+      "category": "workflow",
+      "version": "1.0",
+      "status": "production",
+      "source": "created",
+      "path": "/skills/workflow/system-orchestrator.md",
+      "layer": "core"
+    },
+    {
+      "name": "instagram-carousel",
+      "category": "workflow",
+      "version": "1.0",
+      "status": "production",
+      "source": "installed",
+      "path": "/skills/workflow/instagram-carousel/SKILL.md",
+      "layer": "core"
+    },
+    {
+      "name": "clerk-webhooks",
+      "category": "integration",
+      "version": "1.0",
+      "status": "production",
+      "source": "rewritten",
+      "path": "/skills/integration/clerk-webhooks.md",
+      "layer": "core"
+    },
+    {
+      "name": "github-automation",
+      "category": "integration",
+      "version": "1.0",
+      "status": "production",
+      "source": "rewritten",
+      "path": "/skills/integration/github-automation.md",
+      "layer": "core"
+    },
+    {
+      "name": "notion-integration",
+      "category": "integration",
+      "version": "1.0",
+      "status": "production",
+      "source": "rewritten",
+      "path": "/skills/integration/notion-integration.md",
+      "layer": "core"
+    },
+    {
+      "name": "slack-automation",
+      "category": "integration",
+      "version": "1.0",
+      "status": "production",
+      "source": "rewritten",
+      "path": "/skills/integration/slack-automation.md",
+      "layer": "core"
+    },
+    {
+      "name": "browser-automation",
+      "category": "integration",
+      "version": "1.0",
+      "status": "production",
+      "source": "rewritten",
+      "path": "/skills/integration/browser-automation.md",
+      "layer": "core"
+    },
+    {
+      "name": "skill-analyzer",
+      "category": "meta",
+      "version": "1.0",
+      "status": "production",
+      "source": "created",
+      "path": "/skills/meta/skill-analyzer/SKILL.md",
+      "layer": "core"
+    },
+    {
+      "name": "skill-rebuilder",
+      "category": "meta",
+      "version": "1.0",
+      "status": "production",
+      "source": "created",
+      "path": "/skills/meta/skill-rebuilder/SKILL.md",
+      "layer": "core"
+    },
+    {
+      "name": "find-skills",
+      "category": "meta",
+      "version": "1.0",
+      "status": "production",
+      "source": "installed",
+      "path": "/skills/meta/find-skills/SKILL.md",
+      "layer": "external",
+      "notes": "Skill de descoberta do ecossistema externo (skills.sh). Não é uma skill de execução do pipeline 3F3N. Usar apenas para pesquisa e instalação de novas skills."
+    },
+    {
+      "name": "prompt-optimizer",
+      "category": "pre-input",
+      "version": "1.0",
+      "status": "production",
+      "source": "rewritten",
+      "path": "/skills/pre-input/prompt-optimizer.md",
+      "layer": "pre-input"
+    },
+    {
+      "name": "conversion-audit",
+      "category": "post-processing",
+      "version": "1.0",
+      "status": "production",
+      "source": "rewritten",
+      "path": "/skills/post-processing/conversion-audit.md",
+      "layer": "post-processing"
+    },
+    {
+      "name": "conversion-optimizer",
+      "category": "post-processing",
+      "version": "1.0",
+      "status": "production",
+      "source": "rewritten",
+      "path": "/skills/post-processing/conversion-optimizer.md",
+      "layer": "post-processing"
+    },
+    {
+      "name": "conversion-one-unit-3f3n",
+      "category": "post-processing",
+      "version": "1.0",
+      "status": "production",
+      "source": "created",
+      "path": "/skills/post-processing/conversion-one-unit-3f3n/SKILL.md",
+      "layer": "post-processing",
+      "renamed_from": "conversion-elementor-3f3n"
+    },
+    {
+      "name": "notion-REWRITE_WIP",
+      "category": "wip",
+      "version": "0.1",
+      "status": "wip",
+      "source": "installed",
+      "path": "/skills/wip/notion-REWRITE_WIP/SKILL.md",
+      "layer": "core",
+      "notes": "Aguardando reescrita — substitui a versão final em integration/notion-integration.md"
+    },
+    {
+      "name": "slack-automation-REWRITE_WIP",
+      "category": "wip",
+      "version": "0.1",
+      "status": "wip",
+      "source": "installed",
+      "path": "/skills/wip/slack-automation-REWRITE_WIP/SKILL.md",
+      "layer": "core",
+      "notes": "Aguardando reescrita — substitui a versão final em integration/slack-automation.md"
+    }
+  ]
+}
