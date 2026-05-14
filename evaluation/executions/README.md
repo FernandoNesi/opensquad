@@ -6,6 +6,28 @@ Registrar execuções reais do OpenSquad para validar utilidade prática.
 
 Esta pasta não é uma nova layer, engine, memória ou sistema cognitivo. É apenas um registro operacional simples para capturar o que aconteceu em casos reais.
 
+## V1 Core Freeze
+
+Core congelado por 30 dias durante a fase de finalização operacional da V1.
+
+Permitido:
+
+- correção de comportamento observado;
+- redução de exagero;
+- remoção de burocracia;
+- melhoria prática baseada em execução real.
+
+Não permitido:
+
+- novas layers;
+- novas filosofias;
+- novos runtimes;
+- novas governanças;
+- novas abstrações;
+- sistemas adaptativos;
+- auto-evolução;
+- novas arquiteturas.
+
 ## Foco Da Fase
 
 Executar. Comparar. Calibrar. Aprender padrões reais.
@@ -41,6 +63,31 @@ Para cada execução real:
 4. Registrar o que gerou ação e o que foi ignorado.
 5. Registrar adoption rate, recomendações executadas e mudança operacional observada.
 6. Só propor mudança no sistema se houver falha observada.
+
+## Mínimo Da V1
+
+Rodar no mínimo 20 execuções reais antes do Calibration Sprint.
+
+Medir:
+
+- ação gerada;
+- recomendação ignorada;
+- artificialidade;
+- clareza;
+- utilidade;
+- exagero;
+- burocracia;
+- impacto operacional percebido.
+
+## Depois Das 20 Execuções
+
+Executar o Calibration Sprint:
+
+- detectar padrões;
+- cortar comportamentos ruins;
+- simplificar outputs;
+- melhorar utilidade prática;
+- reduzir teatralidade residual.
 
 ## Convenção De Aprendizado
 

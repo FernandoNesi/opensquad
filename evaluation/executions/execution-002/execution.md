@@ -64,6 +64,21 @@ Evidência:
 - **operational_change_observed:** 
 - **founder_confidence_after_diagnosis:** `baixa | media | alta`
 
+## V1 Measurement
+
+Escala: `0-10`.
+
+| Metric | Score | Evidence |
+|---|---:|---|
+| ação gerada |  |  |
+| recomendação ignorada |  |  |
+| artificialidade |  |  |
+| clareza |  |  |
+| utilidade |  |  |
+| exagero |  |  |
+| burocracia |  |  |
+| impacto operacional percebido |  |  |
+
 ## Action vs Agreement
 
 ### what_generated_real_action
