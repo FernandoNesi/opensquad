@@ -1,18 +1,52 @@
+# Dependencies
 node_modules/
+
+# Environment
 .env
+.env.local
+.env.*.local
+
+# Logs
 *.log
-squads/*/
-_opensquad/_memory/company.md
-_opensquad/_memory/preferences.md
-_opensquad/_browser_profile/
-docs/
-!docs/
-docs/*
-!docs/3f3n-cognitive-layer-eval.md
-.superpowers/
+
+# Runtime / temp
 temp/
-tests/
+tmp/
+.cache/
 test-results/
-temp/squads/
-.claude/settings.local.json
 dashboards/test-results/
+
+# Browser / local machine
+_opensquad/_browser_profile/
+.claude/settings.local.json
+
+# Generated outputs
+**/output/
+**/outputs/
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+
+# Build
+dist/
+build/
+
+# Uploads temporários
+uploads/temp/
+
+# NÃO IGNORAR:
+# squads/
+# skills/
+# evaluation/
+# docs/
+# contracts/
+# pipeline/
+# shared/
